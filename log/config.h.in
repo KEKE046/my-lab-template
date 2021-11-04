@@ -1,0 +1,5 @@
+#pragma once
+
+#cmakedefine LOG_DEBUG
+#cmakedefine LOG_LINE_NUM
+#cmakedefine ANSITERM_DISABLE

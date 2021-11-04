@@ -1,0 +1,12 @@
+option(LOG_DEBUG "logging debug output" ON)
+option(LOG_LINE_NUM "logging line number" ON)
+option(ANSITERM_DISABLE "disable terminal color" OFF)
+configure_file(config.h.in log/config.h)
+
+add_library(log log.cpp log.h ansiterm.h)
+target_include_directories(log PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(log PRIVATE dl)
+target_link_options(log PUBLIC -export-dynamic)
+string(LENGTH "${CMAKE_SOURCE_DIR}/" SOURCE_PATH_SIZE)
+target_compile_definitions(log PUBLIC -DSOURCE_PATH_SIZE=${SOURCE_PATH_SIZE})
+target_include_directories(log PUBLIC .)

@@ -1,0 +1,5 @@
+find_package(PCAP REQUIRED)
+aux_source_directory(. SRCS)
+add_executable(lab ${SRCS})
+target_link_libraries(lab PUBLIC ${PCAP_LIBRARY})
+target_link_libraries(lab PUBLIC log)

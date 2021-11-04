@@ -1,0 +1,5 @@
+find_package(GTest)
+aux_source_directory(. TESTSRCS)
+add_executable(unitest ${TESTSRCS})
+target_link_libraries(unitest PRIVATE gtest_main PRIVATE gtest)
+gtest_discover_tests(unitest)
