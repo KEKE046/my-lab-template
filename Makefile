@@ -1,14 +1,16 @@
 .PHONY: cmake clean cacheclean distclean archive archclean handin handin-% test
 
 BINDIR=build/bin
-ARCHPFX=xxxxxxxxxx-xxx
-MAKE+=-j --no-print-directory
+RUNFILE=$(BINDIR)/lab          # make run 的执行文件
+ARCHPFX=xxxxxxxxxx-xxx         # handin的前缀
+
+MAKE+=-j --no-print-directory  # 多线程make，不显示make进入文件夹的信息
 
 all: build
 	$(MAKE) -C build
 
 run: all
-	$(BINDIR)/lab
+	$(RUNFILE)
 
 test: all
 	cd build && ctest

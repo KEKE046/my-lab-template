@@ -34,6 +34,7 @@ template<typename T1, typename ... T> std::ostream & slog(std::ostream & out, co
     out << first; return slog(out, data...);
 }
 
+// debug
 template<typename ... T> std::ostream & elogd(const T & ... data) {
 #ifdef LOG_DEBUG
     return slog(std::cerr, LOG_COLOR_DEBUG, data..., AT_RESET, "\n");
@@ -42,12 +43,14 @@ template<typename ... T> std::ostream & elogd(const T & ... data) {
 #endif
 }
 
+// info, notify, process, warning, error
 template<typename ... T> std::ostream & elogi(const T & ... data) { return slog(std::cerr, LOG_COLOR_INFO, data..., AT_RESET, "\n"); }
 template<typename ... T> std::ostream & elogn(const T & ... data) { return slog(std::cerr, LOG_COLOR_NOTIFY, data..., AT_RESET, "\n"); }
 template<typename ... T> std::ostream & elogp(const T & ... data) { return slog(std::cerr, LOG_COLOR_PROCESS, data..., AT_RESET, "\n"); }
 template<typename ... T> std::ostream & elogw(const T & ... data) { return slog(std::cerr, LOG_COLOR_WARNING, data..., AT_RESET, "\n"); }
 template<typename ... T> std::ostream & eloge(const T & ... data) { extern std::string getbt(int); return slog(std::cerr, LOG_COLOR_ERROR, data..., AT_RESET, "\n", getbt(2));}
 
+// debug
 template<typename ... T> std::ostream & logd(const T & ... data) {
 #ifdef LOG_DEBUG
     return slog(std::cout, LOG_COLOR_DEBUG, data..., AT_RESET, "\n");
@@ -56,11 +59,15 @@ template<typename ... T> std::ostream & logd(const T & ... data) {
 #endif
 }
 
+// info, notify, process, warning, error
 template<typename ... T> std::ostream & logi(const T & ... data) { return slog(std::cout, LOG_COLOR_INFO, data..., AT_RESET, "\n"); }
 template<typename ... T> std::ostream & logn(const T & ... data) { return slog(std::cout, LOG_COLOR_NOTIFY, data..., AT_RESET, "\n"); }
 template<typename ... T> std::ostream & logp(const T & ... data) { return slog(std::cout, LOG_COLOR_PROCESS, data..., AT_RESET, "\n"); }
 template<typename ... T> std::ostream & logw(const T & ... data) { return slog(std::cout, LOG_COLOR_WARNING, data..., AT_RESET, "\n"); }
 template<typename ... T> std::ostream & loge(const T & ... data) { extern std::string getbt(int); return slog(std::cout, LOG_COLOR_ERROR, data..., AT_RESET, "\n", getbt(2));}
+
+// clear the screen
+inline std::ostream & logc() {return slog(std::cout, AT_ERASE_ALL, AT_CUR_POS_HOME);}
 
 #ifdef LOG_LINE_NUM
 
@@ -86,5 +93,8 @@ template<typename ... T> std::ostream & loge(const T & ... data) { extern std::s
 
 #endif
 
+// simple assert
 #define assert(s, ...) do { if(!s) {loge(__VA_ARGS__); throw std::runtime_error("assert fail");}} while(0)
+
+// check a unix call return value >=0, if <0, return his return value
 #define ckret(statement) do{ int r = (statement); if(r < 0) return r; } while(0)
